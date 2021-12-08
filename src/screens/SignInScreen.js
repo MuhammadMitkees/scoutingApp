@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import {
-  Button,
   View,
   TextInput,
   StyleSheet,
-  CheckBox,
   Text,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
+import { CheckBox } from "react-native-elements";
+// import LinearGradient from "react-native-linear-gradient";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ScoutingLogo from "../components/ScoutingLogo";
+import { LinearGradient } from "expo-linear-gradient";
 
 const SignUpScreen = ({ navigation }) => {
-  const [isSelected, setSelection] = useState("false");
+  const [isSelected, setSelection] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
@@ -24,6 +25,10 @@ const SignUpScreen = ({ navigation }) => {
         style={styles.backgroundImageStyle}
         resizeMode="cover"
       >
+        <LinearGradient
+          style={styles.LGStyles}
+          colors={["rgba(0,0,0,0.1)", "rgba(0,0,0,0.4)", "rgba(0, 0, 0, 1)"]}
+        />
         <ScoutingLogo />
         <TextInput
           placeholder="Email"
@@ -41,8 +46,15 @@ const SignUpScreen = ({ navigation }) => {
           <View style={styles.checkboxSubCont}>
             <CheckBox
               value={isSelected}
-              onValueChange={setSelection}
-              style={styles.checkboxStyle}
+              // onIconPress={setSelection}
+              onPress={() => {
+                setSelection(!isSelected);
+              }}
+              checkedColor="#ED6623"
+              checked={isSelected}
+              textStyle={styles.checkboxTxt}
+              containerStyle={styles.checkboxStyle}
+              size={24}
             />
             <Text style={styles.label}>Remember me</Text>
           </View>
@@ -72,17 +84,22 @@ const styles = StyleSheet.create({
   backgroundImageStyle: {
     flex: 1,
   },
+  LGStyles: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    top: 0,
+    left: 0,
+  },
   emailInput: {
     height: 50,
     marginHorizontal: 25,
     borderRadius: 5,
     backgroundColor: "#ffffff",
-    marginTop: 142,
-    paddingHorizontal: 21,
-    paddingVertical: 17,
+    marginTop: 40,
+    padding: 10,
     color: "#8D8D8D",
     fontSize: 16,
-    fontFamily: "Nexa Bold",
   },
   PassInput: {
     height: 50,
@@ -90,15 +107,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#ffffff",
     marginTop: 10,
-    paddingHorizontal: 21,
-    paddingVertical: 17,
+    padding: 10,
     color: "#8D8D8D",
     fontSize: 16,
-    fontFamily: "Nexa Bold",
   },
   CheckBoxContainer: {
     marginTop: 6,
-    height: 15,
     marginHorizontal: 25,
     flexDirection: "row",
     alignItems: "center",
@@ -109,20 +123,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   checkboxStyle: {
-    height: 15,
-    width: 15,
+    marginLeft: 0,
+    marginRight: 0,
+    paddingHorizontal: 0,
+  },
+  checkboxTxt: {
     color: "#ED6623",
-    backgroundColor: "#ED6623",
   },
   label: {
     marginLeft: 3,
     fontSize: 12,
-    fontFamily: "Nexa Bold",
     color: "white",
   },
   forgotPass: {
     fontSize: 12,
-    fontFamily: "Nexa Bold",
     color: "white",
   },
   singinBtn: {
@@ -131,32 +145,28 @@ const styles = StyleSheet.create({
     padding: 16,
     marginHorizontal: 25,
     borderRadius: 5,
-    marginTop: 200,
+    marginTop: 100,
   },
   signinTxt: {
     color: "white",
-    fontFamily: "Nexa Heavy",
     fontSize: 18,
   },
   signupCont: {
-    height: 12,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 12,
-    marginBottom: 104,
+    marginBottom: 10,
     marginHorizontal: 25,
   },
   signupTxt: {
     color: "#8D8D8D",
     fontSize: 12,
-    fontFamily: "Nexa Bold",
   },
   signupBtn: {
     marginLeft: 8,
     fontSize: 12,
-    fontFamily: "Nexa Bold",
-    color: "black",
+    color: "white",
   },
 });
 export default SignUpScreen;
