@@ -64,6 +64,8 @@ const SignUpScreen = ({ navigation }) => {
               value={password}
               style={styles.PassInput}
               onChange={setPassword}
+              textContentType="password"
+              secureTextEntry={true}
             />
 
             <TextInput />

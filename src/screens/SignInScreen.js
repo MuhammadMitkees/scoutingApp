@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -18,6 +18,34 @@ const SignUpScreen = ({ navigation }) => {
   const [isSelected, setSelection] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const sendingForm = async () => {
+    const url = "https://scoutx.bit68.com/en/api/login/";
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    };
+    const response = await fetch(url, requestOptions);
+    const data = await response.json();
+    console.log(data);
+    {
+      data.access
+        ? window.alert("welcome user")
+        : window.alert("Wrong Username or Password");
+    }
+  };
+
+  useEffect(() => {
+    console.log(email);
+    console.log(password);
+  }, [email, password]);
+
   return (
     <View style={styles.backgroundStyle}>
       <ImageBackground
@@ -32,15 +60,19 @@ const SignUpScreen = ({ navigation }) => {
         <ScoutingLogo />
         <TextInput
           placeholder="Email"
-          value={email}
+          value={email.toLocaleLowerCase()}
           style={styles.emailInput}
-          onChange={setEmail}
+          // onChange={setEmail}
+          onChangeText={setEmail}
         />
         <TextInput
           placeholder="Password"
           value={password}
           style={styles.PassInput}
-          onChange={setPassword}
+          onChangeText={setPassword}
+          // onChange={setPassword}
+          textContentType="password"
+          secureTextEntry={true}
         />
         <View style={styles.CheckBoxContainer}>
           <View style={styles.checkboxSubCont}>
@@ -62,7 +94,14 @@ const SignUpScreen = ({ navigation }) => {
           <Text style={styles.forgotPass}>Forgot password?</Text>
         </View>
         <TouchableOpacity style={styles.singinBtn}>
-          <Text style={styles.signinTxt}>SIGN IN</Text>
+          <Text
+            style={styles.signinTxt}
+            onPress={() => {
+              sendingForm();
+            }}
+          >
+            SIGN IN
+          </Text>
         </TouchableOpacity>
         <View style={styles.signupCont}>
           <Text style={styles.signupTxt}>Don’t have an account?</Text>
