@@ -41,10 +41,10 @@ const SignUpScreen = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(email);
-    console.log(password);
-  }, [email, password]);
+  // useEffect(() => {
+  //   console.log(email);
+  //   console.log(password);
+  // }, [email, password]);
 
   return (
     <View style={styles.backgroundStyle}>
@@ -70,7 +70,6 @@ const SignUpScreen = ({ navigation }) => {
           value={password}
           style={styles.PassInput}
           onChangeText={setPassword}
-          // onChange={setPassword}
           textContentType="password"
           secureTextEntry={true}
         />

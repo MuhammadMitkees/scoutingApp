@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -16,13 +16,57 @@ import { LinearGradient } from "expo-linear-gradient";
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [nationality, setNationality] = useState("");
+  const [accountType, setAccountType] = useState("");
   const [items, setItems] = useState([
-    { label: "Player", value: "Player" },
-    { label: "Parent", value: "Parent" },
-    { label: "Coach", value: "Coach" },
+    { label: "player", value: "player" },
+    { label: "parent", value: "parent" },
+    { label: "coach", value: "coach" },
   ]);
+  const url = `https://scoutx.bit68.com/en/api/${accountType}app/me/`;
+
+  const sendingFormSUp = async () => {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        username: firstName + lastName,
+        phone: phone,
+        password: password,
+        gender: "male",
+        birth_date: "2012-12-12",
+        nationality: nationality,
+      }),
+    };
+    const response = await fetch(url, requestOptions);
+    const data = await response.json();
+    console.log(data);
+    data.access_token
+      ? window.alert("Succeful registration") & navigation.navigate("SignIn")
+      : window.alert("Email already used");
+  };
+  // useEffect(() => {
+  //   console.log(email);
+  //   console.log(password);
+  //   console.log(userName);
+  //   console.log(firstName);
+  //   console.log(lastName);
+  //   console.log(accountType);
+  //   console.log(url);
+  // }, [email, password, userName, lastName, firstName]);
+
   return (
     <ScrollView>
       <View style={styles.backgroundStyle}>
@@ -39,8 +83,8 @@ const SignUpScreen = ({ navigation }) => {
           <View style={styles.formstyle}>
             <RNPickerSelect
               placeholder={{ label: "Choose account type", value: null }}
-              onValueChange={() => {
-                console.log("Changing ...");
+              onValueChange={(x) => {
+                setAccountType(x);
               }}
               style={PickerSelectStyles}
               items={items}
@@ -48,29 +92,59 @@ const SignUpScreen = ({ navigation }) => {
             <Spacer />
             <Spacer />
             <View style={styles.inputContainer}>
-              <TextInput placeholder="First Name" style={styles.FN} />
-              <TextInput placeholder="Last Name" style={styles.LN} />
+              <TextInput
+                placeholder="First Name"
+                style={styles.FN}
+                value={firstName}
+                onChangeText={(x) => {
+                  setFirstName(x);
+                }}
+                textContentType="name"
+                maxLength={30}
+              />
+              <TextInput
+                placeholder="Last Name"
+                style={styles.LN}
+                value={lastName}
+                onChangeText={(x) => {
+                  setLastName(x);
+                }}
+                textContentType="name"
+                maxLength={150}
+              />
             </View>
             <Spacer />
             <TextInput
               placeholder="Email"
               value={email}
               style={styles.emailInput}
-              onChange={setEmail}
+              onChangeText={(x) => {
+                setEmail(x);
+              }}
+              textContentType="emailAddress"
+              maxLength={30}
             />
             <Spacer />
             <TextInput
               placeholder="Password"
               value={password}
               style={styles.PassInput}
-              onChange={setPassword}
+              textContentType="password"
+              onChangeText={(x) => {
+                setPassword(x);
+              }}
               textContentType="password"
               secureTextEntry={true}
             />
 
             <TextInput />
           </View>
-          <TouchableOpacity style={styles.singupBtn}>
+          <TouchableOpacity
+            style={styles.singupBtn}
+            onPress={() => {
+              sendingFormSUp();
+            }}
+          >
             <Text style={styles.signupTxt}>SIGN UP</Text>
           </TouchableOpacity>
           <View style={styles.signinCont}>
